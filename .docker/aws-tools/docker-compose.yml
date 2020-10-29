@@ -1,0 +1,23 @@
+version: '3.4'
+
+x-var: &USER_NAME
+  "container-user"
+
+services:
+  aws-tools:
+    container_name: aws-tools
+    build:
+      context: .
+      args:
+        container_user_name: *USER_NAME
+        container_uid: 1000
+        container_gid: 1000
+    image: haxyier/aws-tools:latest
+    user: *USER_NAME
+    tty: true
+    env_file: 
+      - ./environment.env
+    working_dir: /project
+    volumes: 
+      - ../../.:/project
+      - ./credentials:/home/container-user/.aws
